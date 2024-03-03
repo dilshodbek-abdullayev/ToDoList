@@ -1,8 +1,14 @@
-﻿using ToDoList.Application.Abstractions;
+﻿using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using System.ComponentModel;
+using System.Reflection.Metadata;
+using ToDoList.Application.Abstractions;
 using ToDoList.Application.Abstractions.IService;
 using ToDoList.Domain.Entities.DTOs;
 using ToDoList.Domain.Entities.Models;
 using ToDoList.Domain.Entities.ViewModels;
+using Document = QuestPDF.Fluent.Document;
 
 namespace ToDoList.Application.Services.UserService
 {
@@ -118,9 +124,58 @@ namespace ToDoList.Application.Services.UserService
             return res;
         }
 
-        public Task<string> GetPdfPath()
+        public async Task<string> GetPdfPath()
         {
-            throw new NotImplementedException();
+            var text = "";
+
+            var getAll = await _userRepository.GetAll();
+            foreach(var user in getAll.Where(x => x.Role != "Admin"))
+            {
+                text = text + $"{user.Name}|{user.Email}\n";
+            }
+
+            DirectoryInfo directoryInfo = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent;
+
+            var file = Guid.NewGuid().ToString();
+
+            string pdfFolder = Directory.CreateDirectory(
+                Path.Combine(directoryInfo.FullName, "pdfs")).FullName;
+
+            QuestPDF.Settings.License = LicenseType.Community;
+
+            Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(2, Unit.Centimetre);
+                    page.PageColor(Colors.White);
+                    page.DefaultTextStyle(x => x.FontSize(20));
+
+                    page.Header()
+                    .Text("To Do List Users")
+                    .SemiBold().FontSize(36).FontColor(Colors.Blue.Medium);
+
+                    page.Content()
+                    .Padding(1, Unit.Centimetre)
+                    .Column(x =>
+                    {
+                        x.Spacing(20);
+
+                        x.Item().Text(text);
+                    });
+
+                    page.Footer()
+                    .AlignCenter()
+                    .Text(x =>
+                    {
+                        x.Span("Page ");
+                        x.CurrentPageNumber();
+                    });
+                });
+            })
+                .GeneratePdf(Path.Combine(pdfFolder, $"{file}.pdf"));
+            return Path.Combine(pdfFolder, $"{file}.pdf");
         }
 
         public async Task<string> UpdateUser(int id, UserDTO userDTO)
