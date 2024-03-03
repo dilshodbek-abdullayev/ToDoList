@@ -14,7 +14,15 @@ namespace ToDoList.Infrastructure.BaseRepository
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         private readonly ToDoListDbContext _context;
+
         private readonly DbSet<T> _dbSet;
+
+      public BaseRepository(ToDoListDbContext context, DbSet<T> dbSet)
+        {
+            _context = context;
+            _dbSet = dbSet;
+        }   
+
         public async Task<T> Create(T entity)
         {
             var result = await _dbSet.AddAsync(entity);
@@ -36,19 +44,28 @@ namespace ToDoList.Infrastructure.BaseRepository
             return true;
         }
 
-        public Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _dbSet.ToListAsync();
         }
 
-        public Task<T> GetById(int id)
+        public async Task<T> GetByAny(Expression<Func<T, bool>> expression)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _dbSet.FirstOrDefaultAsync(expression);
+                return result;
+            }catch(Exception ex)
+            {
+                throw;
+            }
         }
 
-        public Task<T> Update(int id, T entity)
+        public async Task<T> Update(T entity)
         {
-            throw new NotImplementedException();
+            var result = _dbSet.Update(entity);
+            await _context.SaveChangesAsync();
+            return result.Entity;
         }
     }
 }

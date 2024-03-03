@@ -15,7 +15,7 @@ namespace ToDoList.Infrastructure.Persistance
             Database.Migrate();
         }
 
-        public DbSet<User> users { get; set; }
+        public DbSet<User> users { get; set; } 
         public DbSet<NotePad> notes { get; set; }
 
     }

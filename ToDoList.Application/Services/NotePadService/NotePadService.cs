@@ -45,11 +45,11 @@ namespace ToDoList.Application.Services.NotePadService
 
         public async Task<NotePad> GetById(int id)
         {
-            var result = await _notePadRepository.GetByAny(x => x.Id == id)
+            var result = await _notePadRepository.GetByAny(x => x.Id == id);
             return result;
         }
 
-        public Task<DateTime> GetDateTimeDo(DateTime dateTime)
+        public async Task<DateTime> GetDateTimeDo(DateTime dateTime)
         {
             throw new NotImplementedException();
         }
@@ -59,9 +59,22 @@ namespace ToDoList.Application.Services.NotePadService
             throw new NotImplementedException();
         }
 
-        public Task<string> Update(int id, NotePadDTO notePadDTO)
+        public async Task<string> Update(int id, NotePadDTO notePadDTO)
         {
-            throw new NotImplementedException();
+           var res = await _notePadRepository.GetByAny(x => x.Id == id);
+
+            if(res != null)
+            {
+                res.Note = notePadDTO.Note;
+
+                var result = await _notePadRepository.Update(res);
+                if(result != null)
+                {
+                    return "Updated";
+                }
+                return "Not Updated";
+            }
+            return "Failed";
         }
     }
 }
