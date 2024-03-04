@@ -37,10 +37,12 @@ namespace ToDoList.Application.Services.NotePadService
             return "Failed";
         }
 
-        public async Task<List<NotePad>> GetAllNotePad()
+        public async Task<List<NotePadDTO>> GetAllNotePad()
         {
             var result = await _notePadRepository.GetAll();
-            return result.ToList();
+
+            List<NotePadDTO> list = result.Select(x=> new NotePadDTO() { Note=x.Note}).ToList();
+            return list;
         }
 
         public async Task<NotePad> GetNotePadById(int id)
@@ -66,6 +68,7 @@ namespace ToDoList.Application.Services.NotePadService
             if(res != null)
             {
                 res.Note = notePadDTO.Note;
+                res.Status = "true";
 
                 var result = await _notePadRepository.Update(res);
                 if(result != null)

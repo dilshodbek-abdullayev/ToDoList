@@ -16,7 +16,7 @@ namespace ToDoList.API.Controllers.Identitiy
             _authService = authService;
         }
         [HttpPost]
-        public async Task<ActionResult<ResponseLogin>> Login([FromForm]RequestLogin login)
+        public async Task<IActionResult> Login([FromForm]RequestLogin login)
         {
             var res = await _authService.GenerateToken(login);
 

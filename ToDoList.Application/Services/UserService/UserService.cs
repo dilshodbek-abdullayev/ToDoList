@@ -207,5 +207,15 @@ namespace ToDoList.Application.Services.UserService
             return "Email already exists";
 
         }
+
+        public async Task<User> GetToken(string login)
+        {
+            var user = await _userRepository.GetByAny(x => x.Login == login);
+            if(user != null)
+            {
+                return user;
+            }
+            return null;
+        }
     }
 }

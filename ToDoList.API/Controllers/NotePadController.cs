@@ -10,7 +10,7 @@ namespace ToDoList.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
     public class NotePadController : ControllerBase
     {
         private readonly INotePadService _notePadService;
@@ -30,7 +30,7 @@ namespace ToDoList.API.Controllers
         }
         [HttpGet]
         [IdentityFilterAttributes(Permission.GetAllNotePad)]
-       public async Task<List<NotePad>> GetAllNotePad()
+       public async Task<List<NotePadDTO>> GetAllNotePad()
         {
             var res = await _notePadService.GetAllNotePad();
             return res;

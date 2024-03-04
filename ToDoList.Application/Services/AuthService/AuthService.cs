@@ -11,15 +11,18 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
+
 namespace ToDoList.Application.Services.AuthService
 {
     public class AuthService : IAuthService
     {
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepo;
+        private readonly IUserService _userService;
 
-        public AuthService(IConfiguration configuration, IUserRepository userRepo)
+        public AuthService(IConfiguration configuration, IUserRepository userRepo,IUserService userService)
         {
+            _userService = userService;
             _userRepo = userRepo;
             _configuration = configuration;
         }
@@ -101,15 +104,13 @@ namespace ToDoList.Application.Services.AuthService
         }
         public async Task<User> FindUser(RequestLogin user)
         {
-
-            var result = await _userRepo.GetByAny(x => x.Login == user.Login);
-
-            if (user.Login == result.Login && user.Password == result.Password)
+            var res = await _userService.GetToken(user.Login);
+            if(user.Login == res.Login && user.Password == res.Password)
             {
-                return result;
+                return res;
             }
-
-            return new User();
+            return null;
+           
         }
     }
 }

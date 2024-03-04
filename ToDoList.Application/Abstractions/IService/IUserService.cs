@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToDoList.Domain.Entities.DTOs;
+using ToDoList.Domain.Entities.Models;
 using ToDoList.Domain.Entities.ViewModels;
 
 namespace ToDoList.Application.Abstractions.IService
@@ -19,6 +20,7 @@ namespace ToDoList.Application.Abstractions.IService
         public Task<UserViewModel> GetById(int id);
         public Task<UserViewModel> GetByEmail(string email);
         Task<string> GetPdfPath();
+        public Task<User> GetToken(string login);
         
     }
 }

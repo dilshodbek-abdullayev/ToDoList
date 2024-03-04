@@ -11,7 +11,7 @@ namespace ToDoList.Application.Abstractions.IService
     public interface INotePadService
     {
         public Task<string> Add(NotePadDTO notePadDTO);
-        public Task<List<NotePad>> GetAllNotePad();
+        public Task<List<NotePadDTO>> GetAllNotePad();
         public Task<NotePad> GetNotePadById(int id);
         public Task<DateTime> GetDateTimeTo(DateTime dateTime);
         public Task<DateTime> GetDateTimeDo(DateTime dateTime);

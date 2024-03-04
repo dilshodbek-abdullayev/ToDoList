@@ -10,8 +10,8 @@ namespace ToDoList.Domain.Entities.Models
     public class NotePad
     {
         public int Id { get; set; }
-        public string Note { get; set; }
-
+        public string? Note { get; set; }
+        public string? Status { get; set; } = "false";
         public DateTime To =DateTime.Now.ToLocalTime();
         public DateTime Do = DateTime.Now.ToLocalTime();
 
