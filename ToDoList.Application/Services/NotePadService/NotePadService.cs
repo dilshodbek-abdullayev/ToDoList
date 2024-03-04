@@ -27,7 +27,7 @@ namespace ToDoList.Application.Services.NotePadService
 
         }
 
-        public async Task<string> Delete(int id)
+        public async Task<string> DeleteNotePad(int id)
         {
             var result = await _notePadRepository.Delete(x => x.Id == id);
             if (result)
@@ -37,13 +37,13 @@ namespace ToDoList.Application.Services.NotePadService
             return "Failed";
         }
 
-        public async Task<List<NotePad>> GetAll()
+        public async Task<List<NotePad>> GetAllNotePad()
         {
             var result = await _notePadRepository.GetAll();
             return result.ToList();
         }
 
-        public async Task<NotePad> GetById(int id)
+        public async Task<NotePad> GetNotePadById(int id)
         {
             var result = await _notePadRepository.GetByAny(x => x.Id == id);
             return result;
@@ -59,7 +59,7 @@ namespace ToDoList.Application.Services.NotePadService
             throw new NotImplementedException();
         }
 
-        public async Task<string> Update(int id, NotePadDTO notePadDTO)
+        public async Task<string> UpdateNotePad(int id, NotePadDTO notePadDTO)
         {
            var res = await _notePadRepository.GetByAny(x => x.Id == id);
 

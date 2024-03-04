@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Application.Abstractions.IService;
+using ToDoList.Domain.Entities.DTOs;
 
 namespace ToDoList.API.Controllers.Identitiy
 {
@@ -13,6 +14,13 @@ namespace ToDoList.API.Controllers.Identitiy
         public AuthController(IAuthService authService)
         {
             _authService = authService;
+        }
+        [HttpPost]
+        public async Task<ActionResult<ResponseLogin>> Login([FromForm]RequestLogin login)
+        {
+            var res = await _authService.GenerateToken(login);
+
+            return Ok(res);
         }
     }
 }

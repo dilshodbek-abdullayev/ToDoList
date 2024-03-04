@@ -14,11 +14,13 @@ namespace ToDoList.Domain.Entities.Enums
         GetByUserEmail=4,
         GetByRole=5,
         GetByUserName=6,
-        UpdateUser,
-        DeleteUser,
-        AddNotePad,
-        UpdateNotePad,
-        DeleteNotePad,
-        GetUserPdf
+        UpdateUser=7,
+        DeleteUser=8,
+        AddNotePad=9,   
+        GetNotePadById=10,
+        GetAllNotePad=11,
+        UpdateNotePad=12,
+        DeleteNotePad=13,
+        GetUserPdf=14
     }
 }
