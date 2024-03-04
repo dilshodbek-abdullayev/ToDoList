@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Identitiy\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ToDoList.Application\ToDoList.Application.csproj" />
     <ProjectReference Include="..\ToDoList.Domain\ToDoList.Domain.csproj" />
     <ProjectReference Include="..\ToDoList.Infrastructure\ToDoList.Infrastructure.csproj" />

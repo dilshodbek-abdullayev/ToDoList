@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using ToDoList.Infrastructure.Persistance;
 using ToDoList.Infrastructure.BaseRepositories;
+using ToDoList.Infrastructure.Persistance;
 
 
 namespace ToDoList.Infrastructure.BaseRepository
@@ -14,14 +9,13 @@ namespace ToDoList.Infrastructure.BaseRepository
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         private readonly ToDoListDbContext _context;
-
         private readonly DbSet<T> _dbSet;
 
-      public BaseRepository(ToDoListDbContext context, DbSet<T> dbSet)
+        public BaseRepository(ToDoListDbContext context)
         {
             _context = context;
-            _dbSet = dbSet;
-        }   
+            _dbSet = context.Set<T>();
+        }
 
         public async Task<T> Create(T entity)
         {
@@ -32,7 +26,7 @@ namespace ToDoList.Infrastructure.BaseRepository
 
         }
 
-        public async Task<bool> Delete(Expression<Func <T, bool >> expression)
+        public async Task<bool> Delete(Expression<Func<T, bool>> expression)
         {
             var result = await _dbSet.FirstOrDefaultAsync(expression);
             if (result == null)
@@ -55,7 +49,8 @@ namespace ToDoList.Infrastructure.BaseRepository
             {
                 var result = await _dbSet.FirstOrDefaultAsync(expression);
                 return result;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw;
             }
